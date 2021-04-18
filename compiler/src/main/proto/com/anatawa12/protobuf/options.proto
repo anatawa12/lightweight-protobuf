@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+import public "google/protobuf/descriptor.proto";
+
+package com.anatawa12.protobuf.compiler;
+
+extend google.protobuf.FileOptions {
+  string java_package = 9738;
+}
