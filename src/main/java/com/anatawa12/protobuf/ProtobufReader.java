@@ -159,7 +159,7 @@ public class ProtobufReader {
     public void skip() throws IOException {
         if (fieldId() == 0) return;
         switch (typeTag()) {
-            case TYPE_VARINT: varint(0);
+            case TYPE_VARINT: varint();
             case TYPE_64BIT: fixed64();
             case TYPE_DELIMITED: delimited();
             case TYPE_START: skipGroup();
@@ -180,15 +180,15 @@ public class ProtobufReader {
     // unsafe operations. DO NOT USE unless you've understood protobuf format
 
     public boolean readBoolUnsafe() throws IOException {
-        return varint(0) != 0;
+        return varint() != 0;
     }
 
     public int readVarint32Unsafe() throws IOException {
-        return (int) varint(VARINT32MASK);
+        return (int) varint();
     }
 
     public long readVarint64Unsafe() throws IOException {
-        return varint(VARINT64MASK);
+        return varint();
     }
 
     public long readFixed64Unsafe() throws IOException {
@@ -275,18 +275,16 @@ public class ProtobufReader {
                     + " but was " + typeTag());
     }
 
-    private long varint(long overflowMask) throws IOException {
+    private long varint() throws IOException {
         long r;
         int b = s.read();
         if (b < 0) throw new ProtocolException("Malformed VARINT");
         r = b & 0x7F;
+        int index = 1;
         while ((b & 0x80) != 0) {
             b = s.read();
             if (b < 0) throw new ProtocolException("Malformed VARINT");
-            // if will happen overflow
-            if ((r & overflowMask) != 0)
-                throw new ProtocolException("Malformed VARINT");
-            r = r << 7 | b & 0x7F;
+            r = r | (b & 0x7FL) << index++ * 7;
         }
         tag = -1;
         return r;
@@ -343,7 +341,4 @@ public class ProtobufReader {
     private interface ToLongIOFunction<T> {
         long apply(T t) throws IOException;
     }
-
-    private static final long VARINT64MASK = (long)0x3F << (64-7);
-    private static final long VARINT32MASK = 0x3F << (32-7);
 }
