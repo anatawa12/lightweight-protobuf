@@ -7,9 +7,28 @@ import com.google.protobuf.DescriptorProtos.FieldDescriptorProto.Type
 
 const val protobuf = "com.anatawa12.protobuf"
 
+enum class ProtoVersion {
+    Proto2 {
+        override val packed: Boolean
+            get() = false
+    },
+    Proto3 {
+        override val packed: Boolean
+            get() = true
+    },
+    ;
+
+    abstract val packed: Boolean
+}
+
 fun collectTypes(
     file: DescriptorProtos.FileDescriptorProto,
 ): ProtobufFile {
+    val version = when (file.syntax) {
+        "proto2" -> ProtoVersion.Proto2
+        "proto3" -> ProtoVersion.Proto3
+        else -> ProtoVersion.Proto2
+    }
     val map = mutableMapOf<FqName, UserTypeInfo>()
     val packageName = FqName.from(if (file.hasPackage() && file.`package` != "") ".${file.`package`}" else "")
     val javaPackage = when {
@@ -19,7 +38,7 @@ fun collectTypes(
     }
     val rootTypes = mutableSetOf<UserTypeInfo>()
     for (msg in file.messageTypeList) {
-        rootTypes += collectTypesOnMessage(packageName, javaPackage, msg, map)
+        rootTypes += collectTypesOnMessage(packageName, javaPackage, msg, map, version)
     }
     for (enum in file.enumTypeList) {
         rootTypes += collectTypesOnEnum(packageName, javaPackage, enum, map)
@@ -36,14 +55,15 @@ fun collectTypesOnMessage(
     javaPackage: String?,
     msg: DescriptorProtos.DescriptorProto,
     map: MutableMap<FqName, UserTypeInfo>,
+    version: ProtoVersion,
 ): MessageInfo {
     val fqName = outerName.resolve(msg.name)
-    val info = MessageInfo(fqName, javaPackage, msg)
+    val info = MessageInfo(fqName, javaPackage, msg, version)
     map[fqName] = info
     val nestedTypes = mutableMapOf<String, UserTypeInfo>()
 
     for (nestedMessage in msg.nestedTypeList) {
-        nestedTypes[nestedMessage.name] = collectTypesOnMessage(fqName, javaPackage, nestedMessage, map)
+        nestedTypes[nestedMessage.name] = collectTypesOnMessage(fqName, javaPackage, nestedMessage, map, version)
     }
 
     for (nestedEnum in msg.enumTypeList) {
@@ -328,6 +348,7 @@ class MessageInfo(
     override val fqName: FqName,
     override val javaPackage: String?,
     val real: DescriptorProtos.DescriptorProto,
+    val version: ProtoVersion,
 ) : UserTypeInfo() {
     override val typeTag get() = TypeTag.TYPE_DELIMITED
     lateinit var nestedTypes: Map<String, UserTypeInfo>
@@ -340,6 +361,7 @@ class MessageInfo(
         // generate fields
         for (field in real.fieldList) {
             val typeName = TypeInfo.of(field, types)
+            val packed = if (field.options.hasPacked()) field.options.packed else version.packed
             if (field.hasOneofIndex()) {
                 fields.add(FieldInfo(
                     field.name,
@@ -347,7 +369,7 @@ class MessageInfo(
                     typeName,
                     true,
                     field.oneofIndex,
-                    field.options.packed,
+                    packed,
                 ))
             } else {
                 fields.add(FieldInfo(
@@ -356,7 +378,7 @@ class MessageInfo(
                     typeName,
                     false,
                     0,
-                    field.options.packed,
+                    packed,
                 ))
             }
         }
