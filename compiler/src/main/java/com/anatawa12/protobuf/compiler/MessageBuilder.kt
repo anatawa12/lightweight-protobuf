@@ -513,7 +513,7 @@ object MessageBuilder {
                         +"${elem.primitiveIteratorType} iter = $getter.iterator();"
                         block("while (iter.hasNext())") {
                             +"${elem.javaName} value = iter.${elem.primitiveIteratorNextFunc}();"
-                            generateWritePrimitiveType(elem, getter)
+                            generateWritePrimitiveType(elem, "value")
                         }
                         +"writer.endDelimited(mapTag);"
                     } else {
