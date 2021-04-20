@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PushbackInputStream;
 import java.net.ProtocolException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import static com.anatawa12.protobuf.Constants.typeName;
 
 @SuppressWarnings({"SpellCheckingInspection", "PointlessArithmeticExpression"})
 public class ProtobufReader {
+    // markSupported is required
     private InputStream s;
     // the full tag. lowest 3 bits are type tag and remains are field Id. zero for EOF.
     // -1 for to be read
@@ -35,6 +35,7 @@ public class ProtobufReader {
             this.s = s;
         else
             this.s = new BufferedInputStream(s);
+        assert s.markSupported();
     }
 
     /**
@@ -143,6 +144,7 @@ public class ProtobufReader {
     public EmbeddedMarker startEmbedded() throws IOException {
         checktag(TYPE_DELIMITED);
         ProtobufInputStream newStream = new ProtobufInputStream(s, readVarint64Unsafe());
+        assert newStream.markSupported();
         s = newStream;
         tag = -1;
         return new EmbeddedMarker(newStream);
@@ -153,6 +155,7 @@ public class ProtobufReader {
         if (marker.s.skip(remain) != remain)
             throw new ProtocolException("Malformed DELIMITED");
         s = marker.s.s;
+        assert s.markSupported();
         tag = -1;
     }
 
@@ -226,17 +229,9 @@ public class ProtobufReader {
 
     public boolean hasRemaining() throws IOException {
         int r;
-        if (s.markSupported()) {
-            s.mark(1);
-            r = s.read();
-            s.reset();
-        } else {
-            PushbackInputStream s = this.s instanceof PushbackInputStream
-                    ? (PushbackInputStream)this.s : new PushbackInputStream(this.s);
-            this.s = s;
-            r = s.read();
-            if (r >= 0) s.unread(r);
-        }
+        s.mark(1);
+        r = s.read();
+        s.reset();
         return r >= 0;
     }
 
