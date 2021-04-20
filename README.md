@@ -18,7 +18,7 @@ I want to make protobuf implementation in less than 100 kilo-bytes.
 
 - [x] implement data struct compiler
 - [x] implement parser
-- [ ] implement writer
+- [x] implement writer
 
 [google-protobuf]: https://github.com/protocolbuffers/protobuf/
 [square-wire]: https://github.com/square/wire/
