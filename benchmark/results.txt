@@ -1,0 +1,4 @@
+Benchmark         Mode  Cnt  Score   Error   Units
+SimpleStruct.gg  thrpt   10  0.345 ± 0.007  ops/ms
+SimpleStruct.lw  thrpt   10  0.344 ± 0.005  ops/ms
+SimpleStruct.wr  thrpt   10  0.348 ± 0.008  ops/ms

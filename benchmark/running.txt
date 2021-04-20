@@ -1,0 +1,196 @@
+System information
+macOS Big Sur 11.2.1 (20D74)
+iMac (Retina 5K, 27-inch, Late 2015)
+Processor: 3.3 GHz Quad-Core Intel Core i5
+Memory: 32 GB 1867 MHz DDR3
+
+============================================================
+bash-3.2$ git rev-parse --short HEAD
+d88b7f2
+bash-3.2$ ./gradlew clean
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.
+Use '--warning-mode all' to show the individual deprecation warnings.
+See https://docs.gradle.org/7.0/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 708ms
+3 actionable tasks: 3 up-to-date
+bash-3.2$ ./gradlew benchmark:jmh
+
+> Task :benchmark:generateMainProtos
+Writing com.anatawa12.protobuf.benchmark.wire.SimpleData to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/generated/source/wire
+Writing com.anatawa12.protobuf.benchmark.wire.RepeatedData to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/generated/source/wire
+Writing com.anatawa12.protobuf.benchmark.wire.UnpackedRepeatedData to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/generated/source/wire
+Writing com.anatawa12.protobuf.benchmark.wire.MapData to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/generated/source/wire
+Writing com.anatawa12.protobuf.benchmark.wire.UserMsg to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/generated/source/wire
+Writing com.anatawa12.protobuf.benchmark.wire.UserEnum to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/generated/source/wire
+Writing com.anatawa12.protobuf.benchmark.wire.OneofData to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/generated/source/wire
+
+> Task :benchmark:jmhRunBytecodeGenerator
+Processing 0 classes from /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/classes/java/jmh with "reflection" generator
+Writing out Java source to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/jmh-generated-sources and resources to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/jmh-generated-resources
+Processing 4 classes from /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/classes/kotlin/jmh with "reflection" generator
+Writing out Java source to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/jmh-generated-sources and resources to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/jmh-generated-resources
+Processing 0 classes from /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/classes/java/test with "reflection" generator
+Writing out Java source to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/jmh-generated-sources and resources to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/jmh-generated-resources
+Processing 0 classes from /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/classes/kotlin/test with "reflection" generator
+Writing out Java source to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/jmh-generated-sources and resources to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/jmh-generated-resources
+
+> Task :benchmark:jmh
+# JMH version: 1.29
+# VM version: JDK 1.8.0_275, OpenJDK 64-Bit Server VM, 25.275-b01
+# VM invoker: /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djava.io.tmpdir=/Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/tmp/jmh -Duser.country=JP -Duser.language=en -Duser.variant
+# Blackhole mode: full + dont-inline hint
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.anatawa12.protobuf.benchmark.SimpleStruct.gg
+
+# Run progress: 0.00% complete, ETA 00:10:00
+# Fork: 1 of 2
+# Warmup Iteration   1: 0.322 ops/ms
+# Warmup Iteration   2: 0.347 ops/ms
+# Warmup Iteration   3: 0.336 ops/ms
+# Warmup Iteration   4: 0.346 ops/ms
+# Warmup Iteration   5: 0.347 ops/ms
+Iteration   1: 0.349 ops/msNG [56s]
+Iteration   2: 0.352 ops/msNG [1m 6s]
+Iteration   3: 0.341 ops/msNG [1m 16s]
+Iteration   4: 0.346 ops/msNG [1m 26s]
+Iteration   5: 0.350 ops/msNG [1m 36s]
+
+# Run progress: 16.67% complete, ETA 00:08:23
+# Fork: 2 of 2
+# Warmup Iteration   1: 0.303 ops/mss]
+# Warmup Iteration   2: 0.346 ops/mss]
+# Warmup Iteration   3: 0.340 ops/ms]
+# Warmup Iteration   4: 0.342 ops/mss]
+# Warmup Iteration   5: 0.340 ops/mss]
+Iteration   1: 0.346 ops/msNG [2m 37s]
+Iteration   2: 0.340 ops/msNG [2m 47s]
+Iteration   3: 0.340 ops/msNG [2m 57s]
+Iteration   4: 0.343 ops/msNG [3m 7s]
+Iteration   5: 0.344 ops/msNG [3m 17s]
+
+
+Result "com.anatawa12.protobuf.benchmark.SimpleStruct.gg":
+  0.345 ±(99.9%) 0.007 ops/ms [Average]
+  (min, avg, max) = (0.340, 0.345, 0.352), stdev = 0.004
+  CI (99.9%): [0.338, 0.352] (assumes normal distribution)
+
+
+# JMH version: 1.29
+# VM version: JDK 1.8.0_275, OpenJDK 64-Bit Server VM, 25.275-b01
+# VM invoker: /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djava.io.tmpdir=/Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/tmp/jmh -Duser.country=JP -Duser.language=en -Duser.variant
+# Blackhole mode: full + dont-inline hint
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.anatawa12.protobuf.benchmark.SimpleStruct.lw
+
+# Run progress: 33.33% complete, ETA 00:06:42
+# Fork: 1 of 2
+# Warmup Iteration   1: 0.317 ops/mss]
+# Warmup Iteration   2: 0.347 ops/mss]
+# Warmup Iteration   3: 0.341 ops/mss]
+# Warmup Iteration   4: 0.345 ops/mss]
+# Warmup Iteration   5: 0.351 ops/ms]
+Iteration   1: 0.346 ops/msNG [4m 17s]
+Iteration   2: 0.341 ops/msNG [4m 27s]
+Iteration   3: 0.344 ops/msNG [4m 37s]
+Iteration   4: 0.346 ops/msNG [4m 47s]
+Iteration   5: 0.342 ops/msNG [4m 57s]
+
+# Run progress: 50.00% complete, ETA 00:05:02
+# Fork: 2 of 2
+# Warmup Iteration   1: 0.319 ops/ms]
+# Warmup Iteration   2: 0.350 ops/mss]
+# Warmup Iteration   3: 0.345 ops/mss]
+# Warmup Iteration   4: 0.345 ops/mss]
+# Warmup Iteration   5: 0.351 ops/mss]
+Iteration   1: 0.349 ops/msNG [5m 58s]
+Iteration   2: 0.348 ops/msNG [6m 8s]
+Iteration   3: 0.338 ops/msNG [6m 18s]
+Iteration   4: 0.342 ops/msNG [6m 28s]
+Iteration   5: 0.343 ops/msNG [6m 38s]
+
+
+Result "com.anatawa12.protobuf.benchmark.SimpleStruct.lw":
+  0.344 ±(99.9%) 0.005 ops/ms [Average]
+  (min, avg, max) = (0.338, 0.344, 0.349), stdev = 0.003
+  CI (99.9%): [0.339, 0.349] (assumes normal distribution)
+
+
+# JMH version: 1.29
+# VM version: JDK 1.8.0_275, OpenJDK 64-Bit Server VM, 25.275-b01
+# VM invoker: /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/bin/java
+# VM options: -Dfile.encoding=UTF-8 -Djava.io.tmpdir=/Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/tmp/jmh -Duser.country=JP -Duser.language=en -Duser.variant
+# Blackhole mode: full + dont-inline hint
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.anatawa12.protobuf.benchmark.SimpleStruct.wr
+
+# Run progress: 66.67% complete, ETA 00:03:21
+# Fork: 1 of 2
+# Warmup Iteration   1: 0.303 ops/mss]
+# Warmup Iteration   2: 0.345 ops/mss]
+# Warmup Iteration   3: 0.346 ops/ms]
+# Warmup Iteration   4: 0.343 ops/mss]
+# Warmup Iteration   5: 0.344 ops/mss]
+Iteration   1: 0.346 ops/msNG [7m 39s]
+Iteration   2: 0.338 ops/msNG [7m 49s]
+Iteration   3: 0.353 ops/msNG [7m 59s]
+Iteration   4: 0.345 ops/msNG [8m 9s]
+Iteration   5: 0.345 ops/msNG [8m 19s]
+
+# Run progress: 83.33% complete, ETA 00:01:40
+# Fork: 2 of 2
+# Warmup Iteration   1: 0.309 ops/mss]
+# Warmup Iteration   2: 0.353 ops/mss]
+# Warmup Iteration   3: 0.356 ops/mss]
+# Warmup Iteration   4: 0.353 ops/mss]
+# Warmup Iteration   5: 0.353 ops/ms]
+Iteration   1: 0.351 ops/msNG [9m 19s]
+Iteration   2: 0.351 ops/msNG [9m 29s]
+Iteration   3: 0.345 ops/msNG [9m 39s]
+Iteration   4: 0.354 ops/msNG [9m 49s]
+Iteration   5: 0.349 ops/msNG [9m 59s]
+
+
+Result "com.anatawa12.protobuf.benchmark.SimpleStruct.wr":
+  0.348 ±(99.9%) 0.008 ops/ms [Average]
+  (min, avg, max) = (0.338, 0.348, 0.354), stdev = 0.005
+  CI (99.9%): [0.340, 0.355] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:10:03
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+Benchmark         Mode  Cnt  Score   Error   Units
+SimpleStruct.gg  thrpt   10  0.345 ± 0.007  ops/ms
+SimpleStruct.lw  thrpt   10  0.344 ± 0.005  ops/ms
+SimpleStruct.wr  thrpt   10  0.348 ± 0.008  ops/ms
+
+Benchmark result is saved to /Users/anatawa12/IdeaProjects/lightweight-protobuf/benchmark/build/results/jmh/results.txt
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.
+Use '--warning-mode all' to show the individual deprecation warnings.
+See https://docs.gradle.org/7.0/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 10m 10s
+24 actionable tasks: 24 executed
+bash-3.2$
