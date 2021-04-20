@@ -14,6 +14,8 @@ Because those are a little heavy, I made this.
 
 I want to make protobuf implementation in less than 100 kilo-bytes.
 
+There's comparison of fat-jar with [shadow plugin] at [file-size-test/fat-sizes.txt](file-size-test/fat-sizes.txt)
+
 ## Status
 
 - [x] implement data struct compiler
@@ -29,3 +31,5 @@ I want to make protobuf implementation in less than 100 kilo-bytes.
 [wire-runtime-3.7.0.jar]: https://repo1.maven.org/maven2/com/squareup/wire/wire-runtime/3.7.0/wire-runtime-3.7.0.jar
 
 [okio-2.8.0.jar]: https://repo1.maven.org/maven2/com/squareup/okio/okio/2.8.0/okio-2.8.0.jar
+
+[shadow plugin]: https://github.com/johnrengelman/shadow
