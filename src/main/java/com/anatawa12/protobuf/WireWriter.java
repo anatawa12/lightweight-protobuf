@@ -33,6 +33,7 @@ public final class WireWriter {
 
     /**
      * puts tag to buffer
+     * @param tag the tag to put
      */
     public void putTag(int tag) {
         putVarint32(tag);
@@ -52,6 +53,7 @@ public final class WireWriter {
 
     /**
      * puts fixed32 data.
+     * @param value the value to put
      */
     public void putFixed32(int value) {
         growAdding(4);
@@ -69,6 +71,7 @@ public final class WireWriter {
 
     /**
      * puts fixed64 data.
+     * @param value the value to put
      */
     @SuppressWarnings("PointlessArithmeticExpression")
     public void putFixed64(long value) {
@@ -90,6 +93,7 @@ public final class WireWriter {
 
     /**
      * puts int32
+     * @param value the value to put
      */
     public void putVarint32(int value) {
         putVarint64(value & 0xFFFFFFFFL);
@@ -97,6 +101,7 @@ public final class WireWriter {
 
     /**
      * puts int64
+     * @param value the value to put
      */
     public void putVarint64(long value) {
         growAdding(getByteCountInVarInt(value));
@@ -136,6 +141,7 @@ public final class WireWriter {
     /**
      * puts byte array data as a delimited.
      * this puts length and data.
+     * @param data the data to put
      */
     public void putDelimited(byte[] data) {
         varintInFixed32Indices.add(cur);
@@ -161,6 +167,7 @@ public final class WireWriter {
     /**
      * begins delimited. this does not puts tag so please use {@link WireWriter#putTag putTag}
      * to put tag.
+     * @return the tag will be passed to {@link #endDelimited}
      */
     public DelimitedTag startDelimited() {
         growAdding(4);

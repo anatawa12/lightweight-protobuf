@@ -38,6 +38,7 @@ public class WireReader {
 
     /**
      * the full tag. lowest 3 bits are type tag and remains are field Id. zero for EOF.
+     * @return the full tag
      */
     public int tag() throws IOException {
         if (tag == -1) readTagAndId();

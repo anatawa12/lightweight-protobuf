@@ -16,7 +16,9 @@ public final class Numbers {
 
     /**
      * returns position of most significant bit.
-     * for 0, returns 0. for 1, returns 0. for 1 << 63, returns 63;
+     * for 0, returns 0. for 1, returns 0. for 1 &lt;&lt; 63, returns 63;
+     * @param x the value
+     * @return the position of msb
      */
     public static int msb(long x) {
         // keep only most significant bit.
