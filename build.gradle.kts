@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.4.31"
+    id("com.github.johnrengelman.shadow") version "6.1.0" apply false
     id("com.google.protobuf") version "0.8.15" apply false
     id("me.champeau.jmh") version "0.6.4" apply false
     java

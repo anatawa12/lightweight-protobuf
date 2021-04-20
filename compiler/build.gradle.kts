@@ -2,7 +2,7 @@ import com.google.protobuf.gradle.*
 
 plugins {
     kotlin("jvm")
-    id("com.github.johnrengelman.shadow") version "6.1.0"
+    id("com.github.johnrengelman.shadow")
     id("com.google.protobuf")
     java
     application
