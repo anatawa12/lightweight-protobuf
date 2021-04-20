@@ -16,11 +16,27 @@ I want to make protobuf implementation in less than 100 kilo-bytes.
 
 There's comparison of fat-jar with [shadow plugin] at [file-size-test/fat-sizes.txt](file-size-test/fat-sizes.txt)
 
+## Limitations
+
+Compared with Google's protobuf, there are various limitations.
+
+- This doesn't support extensions.
+- Currently, to make compiler easily, all fields are used as proto3's normal field. This means,
+  - No support for requires
+  - No hasField() for optionals
+  - No support for proto3's optionals
+- No support for descriptors of anything like FileDescriptor.
+
 ## Status
 
 - [x] implement data struct compiler
 - [x] implement parser
 - [x] implement writer
+- [ ] full support for proto2 and proto3
+  - [ ] proto3: packed by default
+  - [ ] proto3's optional
+  - [ ] proto2's optional
+  - [ ] proto2's required
 
 [google-protobuf]: https://github.com/protocolbuffers/protobuf/
 
