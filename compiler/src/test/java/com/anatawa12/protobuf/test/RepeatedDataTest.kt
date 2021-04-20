@@ -30,7 +30,6 @@ class RepeatedDataTest {
         }
     }
 
-    /*
     @Test
     fun fromLightToGoogle() {
         val light = lightValue()
@@ -49,7 +48,6 @@ class RepeatedDataTest {
             """.trimIndent()
         }
     }
-    // */
 
     @Test
     fun emptiesAreEqual() {

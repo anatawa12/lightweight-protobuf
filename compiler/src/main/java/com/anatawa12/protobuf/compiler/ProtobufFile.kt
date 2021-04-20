@@ -158,8 +158,9 @@ class MapTypeInfo(
     val value: SimpleTypeInfo,
 ) : CollectionTypeInfo() {
     override fun isJavaPrimitive(): Boolean = false
+    val genericPart get() = "<${getWrappedType(key.javaName)}, ${getWrappedType(value.javaName)}>"
     override val javaName: String
-        get() = "java.util.Map<${getWrappedType(key.javaName)}, ${getWrappedType(value.javaName)}>"
+        get() = "java.util.Map$genericPart"
     override val defaultValue: String
         get() = "java.util.Collections.emptyMap()"
     override val newValue: String
@@ -213,7 +214,7 @@ sealed class PrimitiveType(val name: kotlin.String, override val javaName: kotli
             "boolean" -> "false"
             "java.lang.String" -> "\"\""
             "com.anatawa12.protobuf.Bytes" -> "com.anatawa12.protobuf.Bytes.defaultValue"
-            else -> "null"
+            else -> throw AssertionError("logic failre")
         }
     override fun isJavaPrimitive(): Boolean = when (javaName) {
         "double" -> true
@@ -222,6 +223,22 @@ sealed class PrimitiveType(val name: kotlin.String, override val javaName: kotli
         "int" -> true
         "boolean" -> true
         else -> false
+    }
+    val primitiveIteratorType: kotlin.String get() = when (javaName) {
+        "double" -> "java.util.PrimitiveIterator.OfDouble"
+        "float" -> "$protobuf.FloatIterator"
+        "long" -> "java.util.PrimitiveIterator.OfLong"
+        "int" -> "java.util.PrimitiveIterator.OfInt"
+        "boolean" -> "$protobuf.BooleanIterator"
+        else -> error("not a primitive type")
+    }
+    val primitiveIteratorNextFunc: kotlin.String get() = when (javaName) {
+        "double" -> "nextDouble"
+        "float" -> "nextFloat"
+        "long" -> "nextLong"
+        "int" -> "nextInt"
+        "boolean" -> "nextBoolean"
+        else -> error("not a primitive type")
     }
 
     override fun toString(): kotlin.String = name
@@ -309,13 +326,17 @@ class MessageInfo(
                     field.number,
                     typeName,
                     true,
-                    field.oneofIndex))
+                    field.oneofIndex,
+                    field.options.packed,
+                ))
             } else {
                 fields.add(FieldInfo(field.name,
                     field.number,
                     typeName,
                     false,
-                    0))
+                    0,
+                    field.options.packed,
+                ))
             }
         }
 
@@ -330,6 +351,7 @@ class FieldInfo(
     val type: TypeInfo,
     val oneOf: Boolean,
     val index: Int,
+    val packed: Boolean,
 )
 
 class EnumInfo(

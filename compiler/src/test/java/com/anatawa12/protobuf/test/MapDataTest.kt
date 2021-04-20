@@ -31,7 +31,6 @@ class MapDataTest {
         }
     }
 
-    /*
     @Test
     fun fromLightToGoogle() {
         val light = lightValue()
@@ -50,7 +49,6 @@ class MapDataTest {
             """.trimIndent()
         }
     }
-    // */
 
     @Test
     fun emptiesAreEqual() {

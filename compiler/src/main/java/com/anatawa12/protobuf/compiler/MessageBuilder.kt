@@ -61,6 +61,8 @@ object MessageBuilder {
         }
         +""
         +generateRead(msg)
+        +""
+        generateWrite(msg)
     }
 
     private fun generateMessageBuilder(msg: MessageInfo): Source = buildSource("public static final class Builder") {
@@ -112,21 +114,7 @@ object MessageBuilder {
                         val checkExisting = when (field.type) {
                             is MapTypeInfo -> "!this.field${field.number}.isEmpty()"
                             is RepeatedTypeInfo -> "!this.field${field.number}.isEmpty()"
-                            PrimitiveType.String -> "!this.field${field.number}.isEmpty()"
-                            PrimitiveType.Bool -> "this.field${field.number} != false"
-                            PrimitiveType.Bytes -> "this.field${field.number}.length() != 0"
-                            PrimitiveType.Double -> "this.field${field.number} != 0"
-                            PrimitiveType.Fixed32 -> "this.field${field.number} != 0"
-                            PrimitiveType.Fixed64 -> "this.field${field.number} != 0"
-                            PrimitiveType.Float -> "this.field${field.number} != 0"
-                            PrimitiveType.Int32 -> "this.field${field.number} != 0"
-                            PrimitiveType.Int64 -> "this.field${field.number} != 0"
-                            PrimitiveType.SFixed32 -> "this.field${field.number} != 0"
-                            PrimitiveType.SFixed64 -> "this.field${field.number} != 0"
-                            PrimitiveType.SInt32 -> "this.field${field.number} != 0"
-                            PrimitiveType.SInt64 -> "this.field${field.number} != 0"
-                            PrimitiveType.Uint32 -> "this.field${field.number} != 0"
-                            PrimitiveType.Uint64 -> "this.field${field.number} != 0"
+                            is PrimitiveType -> checkExistingForPrimitive(field.type, "this.field${field.number}")
                             is EnumInfo -> "this.field${field.number}.getId() != 0"
                             is MessageInfo -> "${v("has", field.name)}()"
                         }
@@ -140,6 +128,24 @@ object MessageBuilder {
                 +"return builder.append('}').toString();"
             }
         }
+    }
+
+    private fun checkExistingForPrimitive(type: PrimitiveType, getter: String) = when (type) {
+        PrimitiveType.String -> "!$getter.isEmpty()"
+        PrimitiveType.Bool -> "$getter != false"
+        PrimitiveType.Bytes -> "$getter.length() != 0"
+        PrimitiveType.Double -> "$getter != 0"
+        PrimitiveType.Fixed32 -> "$getter != 0"
+        PrimitiveType.Fixed64 -> "$getter != 0"
+        PrimitiveType.Float -> "$getter != 0"
+        PrimitiveType.Int32 -> "$getter != 0"
+        PrimitiveType.Int64 -> "$getter != 0"
+        PrimitiveType.SFixed32 -> "$getter != 0"
+        PrimitiveType.SFixed64 -> "$getter != 0"
+        PrimitiveType.SInt32 -> "$getter != 0"
+        PrimitiveType.SInt64 -> "$getter != 0"
+        PrimitiveType.Uint32 -> "$getter != 0"
+        PrimitiveType.Uint64 -> "$getter != 0"
     }
 
     private fun SourceBuilder.generateEqualsAndHashCode(msg: MessageInfo, thisName: String) {
@@ -447,6 +453,143 @@ object MessageBuilder {
             PrimitiveType.String -> "reader.string()"
             is MessageInfo -> "reader.embedded(${type.javaName}::parseFrom)"
             is EnumInfo -> "reader.enumValue(${type.javaName}::fromId)"
+        }
+    }
+
+    private fun SourceBuilder.generateWrite(msg: MessageInfo) {
+        +"@java.lang.Override"
+        block("public void writeTo($protobuf.WireWriter writer)") {
+            generateWriteBody(msg)
+        }
+    }
+
+    private fun SourceBuilder.generateWriteAField(type: TypeInfo, number: Int, getter: String, packed: Boolean = false) {
+        when (type) {
+            is SimpleTypeInfo -> {
+                val cond = when (type) {
+                    is PrimitiveType -> checkExistingForPrimitive(type, getter)
+                    is MessageInfo -> "!java.util.Objects.equals($getter, ${type.defaultValue})"
+                    is EnumInfo -> "$getter.getId() != 0"
+                }
+                block("if ($cond)") {
+                    +"writer.putTag(${tagOf(number, type)});"
+                    generateWriteSimpleFieldBody(type, getter)
+                }
+            }
+            is MapTypeInfo -> {
+                block("for (java.util.Map.Entry${type.genericPart} entry : $getter.entrySet())") {
+                    +"writer.putTag(${tagOf(number, TypeTag.TYPE_DELIMITED)});"
+                    +"$protobuf.WireWriter.DelimitedTag mapTag = writer.startDelimited();"
+                    generateWriteAField(type.key, 1, "entry.getKey()")
+                    generateWriteAField(type.value, 2, "entry.getValue()")
+                    +"writer.endDelimited(mapTag);"
+                }
+            }
+            is RepeatedTypeInfo -> {
+                val elem = type.element
+                if (elem.isJavaPrimitive()) {
+                    elem as PrimitiveType
+                    if (packed) {
+                        // write in packed format
+                        +"writer.putTag(${tagOf(number, TypeTag.TYPE_DELIMITED)});"
+                        +"$protobuf.WireWriter.DelimitedTag mapTag = writer.startDelimited();"
+                        +"${elem.primitiveIteratorType} iter = $getter.iterator();"
+                        block("while (iter.hasNext())") {
+                            +"${elem.javaName} value = iter.${elem.primitiveIteratorNextFunc}();"
+                            generateWritePrimitiveType(elem, getter)
+                        }
+                        +"writer.endDelimited(mapTag);"
+                    } else {
+                        +"${elem.primitiveIteratorType} iter = $getter.iterator();"
+                        block("while (iter.hasNext())") {
+                            +"${elem.javaName} value = iter.${elem.primitiveIteratorNextFunc}();"
+                            +"writer.putTag(${tagOf(number, elem)});"
+                            generateWriteSimpleFieldBody(elem, "value")
+                        }
+                    }
+                } else {
+                    +"java.util.Iterator<${elem.javaName}> iter = $getter.iterator();"
+                    block("while (iter.hasNext())") {
+                        +"${elem.javaName} value = iter.next();"
+                        +"writer.putTag(${tagOf(number, elem)});"
+                        generateWriteSimpleFieldBody(elem, "value")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun SourceBuilder.generateWriteSimpleFieldBody(type: SimpleTypeInfo, getter: String) {
+        when (type) {
+            is PrimitiveType -> {
+                generateWritePrimitiveType(type, getter)
+            }
+            is MessageInfo -> {
+                assert(type.typeTag == TypeTag.TYPE_DELIMITED)
+                +"$protobuf.WireWriter.DelimitedTag tag = writer.startDelimited();"
+                +"$getter.writeTo(writer);"
+                +"writer.endDelimited(tag);"
+            }
+            is EnumInfo -> {
+                assert(type.typeTag == TypeTag.TYPE_VARINT)
+                +"writer.putEnumValue($getter.getId());"
+            }
+        }
+    }
+
+    // generate switch body
+    private fun SourceBuilder.generateWriteBody(msg: MessageInfo) {
+        +"// fields"
+        for (field in msg.fields) {
+            if (!field.oneOf) {
+                block("") {
+                    generateWriteAField(field.type, field.number, "this.${v("get", field.name)}()", field.packed)
+                }
+            }
+        }
+        if (msg.oneofNameList.isEmpty()) return
+        val fieldById = msg.fields.asSequence().filter { it.oneOf }.groupBy { it.index }
+        //System.err.println("fieldById: $fieldById")
+        //System.exit(-1);
+        +"// oneof"
+        for ((index, oneof) in msg.oneofNameList.withIndex()) {
+            val oneofBody = fieldById.getValue(index)
+            block("switch (this.oneOfStat$index)") {
+                for (field in oneofBody) {
+                    block("case ${field.number}:") {
+                        +"${field.type.javaName} value = (${field.type.javaName}) this.oneOf$index;"
+                        generateWriteAField(field.type as SimpleTypeInfo, field.number, "value")
+                        +"break;"
+                    }
+                }
+                block("case 0:") {
+                    +"// this means no value"
+                }
+                block("default:") {
+                    +"throw new java.lang.AssertionError(\"invalid oneof state: field#\" + this.oneOfStat$index + \" is not a element of oneof $oneof\");"
+                }
+            }
+        }
+    }
+
+
+    private fun SourceBuilder.generateWritePrimitiveType(type: PrimitiveType, value: String) {
+        when (type) {
+            PrimitiveType.Bool -> +"writer.putBool($value);"
+            PrimitiveType.Bytes -> +"writer.putBytes($value);"
+            PrimitiveType.Double -> +"writer.putFloat64($value);"
+            PrimitiveType.Fixed32 -> +"writer.putFixed32($value);"
+            PrimitiveType.Fixed64 -> +"writer.putFixed64($value);"
+            PrimitiveType.SFixed32 -> +"writer.putFixed32($value);"
+            PrimitiveType.SFixed64 -> +"writer.putFixed64($value);"
+            PrimitiveType.Float -> +"writer.putFloat32($value);"
+            PrimitiveType.Int32 -> +"writer.putVarint32($value);"
+            PrimitiveType.Int64 -> +"writer.putVarint64($value);"
+            PrimitiveType.Uint32 -> +"writer.putVarint32($value);"
+            PrimitiveType.Uint64 -> +"writer.putVarint64($value);"
+            PrimitiveType.SInt32 -> +"writer.putSint32($value);"
+            PrimitiveType.SInt64 -> +"writer.putSint64($value);"
+            PrimitiveType.String -> +"writer.putString($value);"
         }
     }
 

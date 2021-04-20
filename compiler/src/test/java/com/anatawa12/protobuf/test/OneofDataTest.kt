@@ -33,7 +33,6 @@ class OneofDataTest {
         }
     }
 
-    /*
     @ParameterizedTest
     @ValueSource(ints = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
     fun fromLightToGoogle(id: Int) {
@@ -53,7 +52,6 @@ class OneofDataTest {
             """.trimIndent()
         }
     }
-    // */
 
     @Test
     fun emptiesAreEqual() {

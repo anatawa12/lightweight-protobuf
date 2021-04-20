@@ -30,7 +30,6 @@ class SimpleDataTest {
         }
     }
 
-    /*
     @Test
     fun fromLightToGoogle() {
         val light = lightValue()
@@ -49,7 +48,6 @@ class SimpleDataTest {
             """.trimIndent()
         }
     }
-    // */
 
     @Test
     fun emptiesAreEqual() {
