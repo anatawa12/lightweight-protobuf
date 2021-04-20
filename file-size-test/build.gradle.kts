@@ -92,10 +92,6 @@ val generateFatSizes by tasks.creating {
     }
 }
 
-tasks.build {
-    dependsOn(generateFatSizes)
-}
-
 fun getGitHash(): String {
     return kotlin.runCatching {
         ProcessBuilder().command("git", "rev-parse", "--short", "HEAD")
