@@ -4,7 +4,7 @@ object MessageBuilder {
     fun generateMessage(msg: MessageInfo, isRoot: Boolean = true): Source = buildSource {
         val static = if (isRoot) "" else " static"
 
-        block("public$static final class ${msg.fqName.simpleName}") {
+        block("public$static final class ${msg.fqName.simpleName} extends $protobuf.Message") {
 
             +generateMessageBody(msg)
             +""
