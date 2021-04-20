@@ -1,0 +1,10 @@
+common:
+  wire: 3.7.0
+  protobuf: 3.15.8
+  lightweight: 1.0.0-SNAPSHOT
+  git-hash: 1272948
+google:      1 663 356 bytes
+google-lite:   687 518 bytes
+lightweight:    65 728 bytes
+wire:        2 142 529 bytes
+wire-no-kt:    432 755 bytes
