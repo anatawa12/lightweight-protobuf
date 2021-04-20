@@ -1,7 +1,7 @@
 package com.anatawa12.protobuf.test
 
 import com.anatawa12.protobuf.Bytes
-import com.anatawa12.protobuf.ProtobufReader
+import com.anatawa12.protobuf.WireReader
 import com.anatawa12.protobuf.test.google.First
 import com.anatawa12.protobuf.test.lightweight.SimpleData
 import com.google.protobuf.ByteString
@@ -17,7 +17,7 @@ class SimpleDataTest {
         val google = googleValue()
         val baos = ByteArrayOutputStream()
         google.writeTo(baos)
-        val light = SimpleData.parseFrom(ProtobufReader(ByteArrayInputStream(baos.toByteArray())))
+        val light = SimpleData.parseFrom(WireReader(ByteArrayInputStream(baos.toByteArray())))
 
         assertEquals(lightValue(), light) {
             """

@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ProtocolException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.IntFunction;
 
 import static com.anatawa12.protobuf.Constants.TYPE_32BIT;
@@ -20,7 +18,7 @@ import static com.anatawa12.protobuf.Constants.TYPE_VARINT;
 import static com.anatawa12.protobuf.Constants.typeName;
 
 @SuppressWarnings({"SpellCheckingInspection", "PointlessArithmeticExpression"})
-public class ProtobufReader {
+public class WireReader {
     // markSupported is required
     private InputStream s;
     // the full tag. lowest 3 bits are type tag and remains are field Id. zero for EOF.
@@ -30,7 +28,7 @@ public class ProtobufReader {
     // the buffer to read s few bytes at once
     private byte[] buf;
 
-    public ProtobufReader(InputStream s) {
+    public WireReader(InputStream s) {
         if (s.markSupported())
             this.s = s;
         else
@@ -132,7 +130,7 @@ public class ProtobufReader {
         }
     }
 
-    public <T> T embedded(IOFunction<ProtobufReader, T> reader) throws IOException {
+    public <T> T embedded(IOFunction<WireReader, T> reader) throws IOException {
         EmbeddedMarker marker = startEmbedded();
         try {
             return reader.apply(this);
@@ -143,7 +141,7 @@ public class ProtobufReader {
 
     public EmbeddedMarker startEmbedded() throws IOException {
         checktag(TYPE_DELIMITED);
-        ProtobufInputStream newStream = new ProtobufInputStream(s, readVarint64Unsafe());
+        LimitingInputStream newStream = new LimitingInputStream(s, readVarint64Unsafe());
         assert newStream.markSupported();
         s = newStream;
         tag = -1;
@@ -173,9 +171,9 @@ public class ProtobufReader {
     }
 
     public static class EmbeddedMarker {
-        ProtobufInputStream s;
+        LimitingInputStream s;
 
-        public EmbeddedMarker(ProtobufInputStream s) {
+        public EmbeddedMarker(LimitingInputStream s) {
             this.s = s;
         }
     }
@@ -307,7 +305,7 @@ public class ProtobufReader {
         }
     }
 
-    private IntList packed32(ToIntIOFunction<ProtobufReader> reader) throws IOException {
+    private IntList packed32(ToIntIOFunction<WireReader> reader) throws IOException {
         return embedded((r) -> {
             IntList ints = new IntList();
             while (r.hasRemaining())
@@ -316,7 +314,7 @@ public class ProtobufReader {
         });
     }
 
-    private LongList packed64(ToLongIOFunction<ProtobufReader> reader) throws IOException {
+    private LongList packed64(ToLongIOFunction<WireReader> reader) throws IOException {
         return embedded((r) -> {
             LongList longs = new LongList();
             while (r.hasRemaining())

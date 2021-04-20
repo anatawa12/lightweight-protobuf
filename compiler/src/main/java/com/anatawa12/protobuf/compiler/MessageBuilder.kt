@@ -338,7 +338,7 @@ object MessageBuilder {
     }
 
     private fun generateRead(msg: MessageInfo): Source = buildSource {
-        block("public static ${msg.javaName} parseFrom($protobuf.ProtobufReader reader) throws java.io.IOException") {
+        block("public static ${msg.javaName} parseFrom($protobuf.WireReader reader) throws java.io.IOException") {
             +"Builder builder = newBuilder();"
             block("fields: while (true)") {
                 block("switch (reader.tag())") {
@@ -368,7 +368,7 @@ object MessageBuilder {
                     block("case ${tagOf(field.number, TypeTag.TYPE_DELIMITED)}:") {
                         +"${type.key.javaName} key = ${type.key.defaultValue};"
                         +"${type.value.javaName} value = ${type.value.defaultValue};"
-                        +"$protobuf.ProtobufReader.EmbeddedMarker marker = reader.startEmbedded();"
+                        +"$protobuf.WireReader.EmbeddedMarker marker = reader.startEmbedded();"
                         block("try") {
                             block("mapEntry: while(true)") {
                                 block("switch(reader.tag())") {
@@ -389,7 +389,7 @@ object MessageBuilder {
                 is RepeatedTypeInfo -> {
                     if (type.element.typeTag in packable) {
                         block("case ${tagOf(field.number, TypeTag.TYPE_DELIMITED)}:") {
-                            +"$protobuf.ProtobufReader.EmbeddedMarker marker = reader.startEmbedded();"
+                            +"$protobuf.WireReader.EmbeddedMarker marker = reader.startEmbedded();"
                             block("try") {
                                 block("while (reader.hasRemaining())") {
                                     +"builder.${v("add", field.name)}(${generateReadAPackedPrimitiveType(type.element)});"
@@ -427,8 +427,8 @@ object MessageBuilder {
             PrimitiveType.Int64 -> "reader.readVarint64Unsafe()"
             PrimitiveType.Uint32 -> "reader.readVarint32Unsafe()"
             PrimitiveType.Uint64 -> "reader.readVarint64Unsafe()"
-            PrimitiveType.SInt32 -> "$protobuf.ProtobufReader.zigzag32(reader.readVarint32Unsafe())"
-            PrimitiveType.SInt64 -> "$protobuf.ProtobufReader.zigzag64(reader.readVarint64Unsafe())"
+            PrimitiveType.SInt32 -> "$protobuf.WireReader.zigzag32(reader.readVarint32Unsafe())"
+            PrimitiveType.SInt64 -> "$protobuf.WireReader.zigzag64(reader.readVarint64Unsafe())"
             is EnumInfo -> "reader.readEnumValueUnsafe(${type.javaName}::fromId)"
             else -> error("can't use packed format: $type")
         }

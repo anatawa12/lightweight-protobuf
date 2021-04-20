@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 
-class ProtobufInputStream extends InputStream {
+class LimitingInputStream extends InputStream {
     final InputStream s;
     long remain;
 
-    public ProtobufInputStream(InputStream s, long remain) {
+    public LimitingInputStream(InputStream s, long remain) {
         this.s = s;
         this.remain = remain;
     }

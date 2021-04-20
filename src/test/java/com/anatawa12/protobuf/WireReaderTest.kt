@@ -2,12 +2,11 @@ package com.anatawa12.protobuf
 
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 
-internal class ProtobufReaderTest {
+internal class WireReaderTest {
     @Test
     fun test() {
-        val r = ProtobufReader(ByteArrayInputStream(byteArrayOf(2, 0)))
+        val r = WireReader(ByteArrayInputStream(byteArrayOf(2, 0)))
         r.embedded {
 
         }

@@ -1,7 +1,7 @@
 package com.anatawa12.protobuf.test
 
 import com.anatawa12.protobuf.Bytes
-import com.anatawa12.protobuf.ProtobufReader
+import com.anatawa12.protobuf.WireReader
 import com.anatawa12.protobuf.test.google.First
 import com.anatawa12.protobuf.test.lightweight.MapData
 import com.google.protobuf.ByteString
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.lang.RuntimeException
 
 class MapDataTest {
     @Test
@@ -18,7 +17,7 @@ class MapDataTest {
         val google = googleValue()
         val baos = ByteArrayOutputStream()
         google.writeTo(baos)
-        val light = MapData.parseFrom(ProtobufReader(ByteArrayInputStream(baos.toByteArray())))
+        val light = MapData.parseFrom(WireReader(ByteArrayInputStream(baos.toByteArray())))
 
         assertEquals(lightValue(), light) {
             """
