@@ -16,6 +16,8 @@ repositories {
     mavenCentral()
 }
 
+idea.module.sourceDirs.add(file("../benchmark/src/main/proto-include"))
+
 dependencies {
     implementation("com.google.protobuf:protobuf-java:${Versions.protobuf}")
     implementation(kotlin("stdlib"))
@@ -55,12 +57,26 @@ protobuf {
         }
     }
     generateProtoTasks {
+        ofSourceSet("main").forEach {
+            // workaround for https://github.com/google/protobuf-gradle-plugin/issues/470
+            it.addIncludeDir(files("../benchmark/src/main/proto-include/"))
+        }
         ofSourceSet("test").forEach {
+            // workaround for https://github.com/google/protobuf-gradle-plugin/issues/470
+            it.addIncludeDir(files("../benchmark/src/main/proto-include/"))
+            it.addIncludeDir(files("src/main/proto/"))
             it.dependsOn(":compiler:shadowJar")
             it.plugins {
                 create("lw-java")
             }
             it.outputs.upToDateWhen { false }
         }
+    }
+}
+
+afterEvaluate {
+    // workaround for https://github.com/google/protobuf-gradle-plugin/issues/470
+    tasks.withType(ProtobufExtract::class) {
+        isEnabled = false
     }
 }
