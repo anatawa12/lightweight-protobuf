@@ -39,6 +39,11 @@ tasks.test {
     useJUnitPlatform()
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:${Versions.protobuf}"
