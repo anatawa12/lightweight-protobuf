@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: Apache-2.0
+// a part of https://github.com/square/wire/blob/85dc2120adfdf489d66ed425f2cbad0ecbf0184a/wire-library/wire-schema/src/jvmMain/resources/wire/extensions.proto
+
+syntax = "proto2";
+
+package wire;
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.FileOptions {
+  optional string wire_package = 1087;
+}

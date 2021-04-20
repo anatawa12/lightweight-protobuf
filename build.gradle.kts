@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.4.31"
     id("com.google.protobuf") version "0.8.15" apply false
+    id("me.champeau.jmh") version "0.6.4" apply false
     java
     idea
     application
@@ -36,7 +37,10 @@ java {
     withSourcesJar()
 }
 
-allprojects {
+listOf(
+    project(":"),
+    project(":compiler"),
+).each {
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
     apply(plugin = "java")
@@ -94,3 +98,5 @@ allprojects {
 
     signing.sign(maven)
 }
+
+fun <E> Iterable<E>.each(function: Action<E>) = forEach { function.execute(it!!) }

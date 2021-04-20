@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+
+package com.anatawa12.protobuf.benchmark;
+
+option java_package =
+    "com.anatawa12.protobuf.benchmark.google";
+option (com.anatawa12.protobuf.compiler.java_package) =
+    "com.anatawa12.protobuf.benchmark.lightweight";
+option (wire.wire_package) =
+    "com.anatawa12.protobuf.benchmark.wire";
+import "com/anatawa12/protobuf/options.proto";
+import "wire/extensions.proto";
+
+message SimpleData {
+  double   doubleValue = 1;
+  float    floatValue = 2;
+  int64    int64Value = 3;
+  uint64   uint64Value = 4;
+  fixed64  fixed64Value = 5;
+  sfixed64 sfixed64Value = 6;
+  sint64   sint64Value = 7;
+  int32    int32Value = 8;
+  fixed32  fixed32Value = 9;
+  sfixed32 sfixed32Value = 10;
+  uint32   uint32Value = 11;
+  sint32   sint32Value = 12;
+  bool     boolValue = 13;
+  string   stringValue = 14;
+  bytes    bytesValue = 15;
+  UserMsg  userMsgValue = 16;
+  UserEnum userEnumValue = 17;
+}
+
+message RepeatedData {
+  repeated double   doubleValue = 1;
+  repeated float    floatValue = 2;
+  repeated int64    int64Value = 3;
+  repeated uint64   uint64Value = 4;
+  repeated fixed64  fixed64Value = 5;
+  repeated sfixed64 sfixed64Value = 6;
+  repeated sint64   sint64Value = 7;
+  repeated int32    int32Value = 8;
+  repeated fixed32  fixed32Value = 9;
+  repeated sfixed32 sfixed32Value = 10;
+  repeated uint32   uint32Value = 11;
+  repeated sint32   sint32Value = 12;
+  repeated bool     boolValue = 13;
+  repeated string   stringValue = 14;
+  repeated bytes    bytesValue = 15;
+  repeated UserMsg  userMsgValue = 16;
+  repeated UserEnum userEnumValue = 17;
+}
+
+message UnpackedRepeatedData {
+  repeated double   doubleValue = 1 [packed = false];
+  repeated float    floatValue = 2 [packed = false];
+  repeated int64    int64Value = 3 [packed = false];
+  repeated uint64   uint64Value = 4 [packed = false];
+  repeated fixed64  fixed64Value = 5 [packed = false];
+  repeated sfixed64 sfixed64Value = 6 [packed = false];
+  repeated sint64   sint64Value = 7 [packed = false];
+  repeated int32    int32Value = 8 [packed = false];
+  repeated fixed32  fixed32Value = 9 [packed = false];
+  repeated sfixed32 sfixed32Value = 10 [packed = false];
+  repeated uint32   uint32Value = 11 [packed = false];
+  repeated sint32   sint32Value = 12 [packed = false];
+  repeated bool     boolValue = 13 [packed = false];
+  repeated string   stringValue = 14 [packed = false];
+  repeated bytes    bytesValue = 15 [packed = false];
+  //repeated UserMsg  userMsgValue = 16 [packed = false];
+  repeated UserEnum userEnumValue = 17 [packed = false];
+}
+
+message MapData {
+  map<string, double>   doubleValue = 1;
+  map<string, float>    floatValue = 2;
+  map<string, int64>    int64Value = 3;
+  map<string, uint64>   uint64Value = 4;
+  map<string, fixed64>  fixed64Value = 5;
+  map<string, sfixed64> sfixed64Value = 6;
+  map<string, sint64>   sint64Value = 7;
+  map<string, int32>    int32Value = 8;
+  map<string, fixed32>  fixed32Value = 9;
+  map<string, sfixed32> sfixed32Value = 10;
+  map<string, uint32>   uint32Value = 11;
+  map<string, sint32>   sint32Value = 12;
+  map<string, bool>     boolValue = 13;
+  map<string, string>   stringValue = 14;
+  map<string, bytes>    bytesValue = 15;
+  map<string, UserMsg>  userMsgValue = 16;
+  map<string, UserEnum> userEnumValue = 17;
+}
+
+message UserMsg {
+}
+
+enum UserEnum {
+  DEFAULT = 0;
+  VALUE1 = 1;
+}
+
+message OneofData {
+  oneof oneOf {
+    double   doubleValue = 1;
+    float    floatValue = 2;
+    int64    int64Value = 3;
+    uint64   uint64Value = 4;
+    fixed64  fixed64Value = 5;
+    sfixed64 sfixed64Value = 6;
+    sint64   sint64Value = 7;
+    int32    int32Value = 8;
+    fixed32  fixed32Value = 9;
+    sfixed32 sfixed32Value = 10;
+    uint32   uint32Value = 11;
+    sint32   sint32Value = 12;
+    bool     boolValue = 13;
+    string   stringValue = 14;
+    bytes    bytesValue = 15;
+    UserMsg  userMsgValue = 16;
+    UserEnum userEnumValue = 17;
+  }
+}
