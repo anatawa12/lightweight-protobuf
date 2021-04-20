@@ -158,7 +158,7 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
     public boolean addAll(Collection<? extends Double> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof DoubleList)
-            addAll(size, ((DoubleList) c).backed, ((DoubleList) c).size);
+            return addAll(size, ((DoubleList) c).backed, ((DoubleList) c).size);
         return addAll(size, toPrimitives(c));
     }
 
@@ -166,14 +166,14 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
     public boolean addAll(int index, Collection<? extends Double> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof DoubleList)
-            addAll(index, ((DoubleList) c).backed, ((DoubleList) c).size);
+            return addAll(index, ((DoubleList) c).backed, ((DoubleList) c).size);
         return addAll(index, toPrimitives(c));
     }
 
     private boolean addAll(int index, double[] c, int addSize) {
         rangeCheckForAdd(index);
         modCount++;
-        if (size == 0) return false;
+        if (addSize == 0) return false;
         double[] ary;
         if (backed.length < size + addSize) {
             int newSize = backed.length * 2;

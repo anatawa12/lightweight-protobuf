@@ -13,7 +13,7 @@ public final class ImmutableFloatList extends FloatList {
     public ImmutableFloatList(FloatList copyFrom) {
         // empty backed array is safe because can't add anything with this list
         super(copyFrom.size(), 0);
-        super.addAll(0, copyFrom.backed);
+        super.addAll(copyFrom);
     }
 
     public static final ImmutableFloatList EMPTY = new ImmutableFloatList(new FloatList());

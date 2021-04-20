@@ -13,7 +13,7 @@ public final class ImmutableIntList extends IntList {
     public ImmutableIntList(IntList copyFrom) {
         // empty backed array is safe because can't add anything with this list
         super(copyFrom.size(), 0);
-        super.addAll(0, copyFrom.backed);
+        super.addAll(copyFrom);
     }
 
     public static final ImmutableIntList EMPTY = new ImmutableIntList(new IntList());

@@ -222,7 +222,7 @@ public class $ListName extends AbstractList<$Boxed> implements List<$Boxed>, Ran
     public boolean addAll(Collection<? extends $Boxed> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof $ListName)
-            addAll(size, (($ListName) c).backed, (($ListName) c).size);
+            return addAll(size, (($ListName) c).backed, (($ListName) c).size);
         return addAll(size, toPrimitives(c));
     }
 
@@ -230,14 +230,14 @@ public class $ListName extends AbstractList<$Boxed> implements List<$Boxed>, Ran
     public boolean addAll(int index, Collection<? extends $Boxed> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof $ListName)
-            addAll(index, (($ListName) c).backed, (($ListName) c).size);
+            return addAll(index, (($ListName) c).backed, (($ListName) c).size);
         return addAll(index, toPrimitives(c));
     }
 
     private boolean addAll(int index, $primitive[] c, int addSize) {
         rangeCheckForAdd(index);
         modCount++;
-        if (size == 0) return false;
+        if (addSize == 0) return false;
         $primitive[] ary;
         if (backed.length < size + addSize) {
             int newSize = backed.length * 2;
@@ -645,7 +645,7 @@ public final class $ImmutableListName extends $ListName {
     public $ImmutableListName($ListName copyFrom) {
         // empty backed array is safe because can't add anything with this list
         super(copyFrom.size(), 0);
-        super.addAll(0, copyFrom.backed);
+        super.addAll(copyFrom);
     }
 
     public static final $ImmutableListName EMPTY = new $ImmutableListName(new $ListName());

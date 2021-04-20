@@ -158,7 +158,7 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
     public boolean addAll(Collection<? extends Long> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof LongList)
-            addAll(size, ((LongList) c).backed, ((LongList) c).size);
+            return addAll(size, ((LongList) c).backed, ((LongList) c).size);
         return addAll(size, toPrimitives(c));
     }
 
@@ -166,14 +166,14 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
     public boolean addAll(int index, Collection<? extends Long> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof LongList)
-            addAll(index, ((LongList) c).backed, ((LongList) c).size);
+            return addAll(index, ((LongList) c).backed, ((LongList) c).size);
         return addAll(index, toPrimitives(c));
     }
 
     private boolean addAll(int index, long[] c, int addSize) {
         rangeCheckForAdd(index);
         modCount++;
-        if (size == 0) return false;
+        if (addSize == 0) return false;
         long[] ary;
         if (backed.length < size + addSize) {
             int newSize = backed.length * 2;

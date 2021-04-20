@@ -157,7 +157,7 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
     public boolean addAll(Collection<? extends Float> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof FloatList)
-            addAll(size, ((FloatList) c).backed, ((FloatList) c).size);
+            return addAll(size, ((FloatList) c).backed, ((FloatList) c).size);
         return addAll(size, toPrimitives(c));
     }
 
@@ -165,14 +165,14 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
     public boolean addAll(int index, Collection<? extends Float> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof FloatList)
-            addAll(index, ((FloatList) c).backed, ((FloatList) c).size);
+            return addAll(index, ((FloatList) c).backed, ((FloatList) c).size);
         return addAll(index, toPrimitives(c));
     }
 
     private boolean addAll(int index, float[] c, int addSize) {
         rangeCheckForAdd(index);
         modCount++;
-        if (size == 0) return false;
+        if (addSize == 0) return false;
         float[] ary;
         if (backed.length < size + addSize) {
             int newSize = backed.length * 2;

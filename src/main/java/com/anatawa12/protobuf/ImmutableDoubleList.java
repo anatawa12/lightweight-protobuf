@@ -13,7 +13,7 @@ public final class ImmutableDoubleList extends DoubleList {
     public ImmutableDoubleList(DoubleList copyFrom) {
         // empty backed array is safe because can't add anything with this list
         super(copyFrom.size(), 0);
-        super.addAll(0, copyFrom.backed);
+        super.addAll(copyFrom);
     }
 
     public static final ImmutableDoubleList EMPTY = new ImmutableDoubleList(new DoubleList());

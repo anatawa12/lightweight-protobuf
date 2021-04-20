@@ -158,7 +158,7 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
     public boolean addAll(Collection<? extends Integer> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof IntList)
-            addAll(size, ((IntList) c).backed, ((IntList) c).size);
+            return addAll(size, ((IntList) c).backed, ((IntList) c).size);
         return addAll(size, toPrimitives(c));
     }
 
@@ -166,14 +166,14 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
     public boolean addAll(int index, Collection<? extends Integer> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof IntList)
-            addAll(index, ((IntList) c).backed, ((IntList) c).size);
+            return addAll(index, ((IntList) c).backed, ((IntList) c).size);
         return addAll(index, toPrimitives(c));
     }
 
     private boolean addAll(int index, int[] c, int addSize) {
         rangeCheckForAdd(index);
         modCount++;
-        if (size == 0) return false;
+        if (addSize == 0) return false;
         int[] ary;
         if (backed.length < size + addSize) {
             int newSize = backed.length * 2;

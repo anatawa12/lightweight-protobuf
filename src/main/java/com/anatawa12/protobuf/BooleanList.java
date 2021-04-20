@@ -157,7 +157,7 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
     public boolean addAll(Collection<? extends Boolean> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof BooleanList)
-            addAll(size, ((BooleanList) c).backed, ((BooleanList) c).size);
+            return addAll(size, ((BooleanList) c).backed, ((BooleanList) c).size);
         return addAll(size, toPrimitives(c));
     }
 
@@ -165,14 +165,14 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
     public boolean addAll(int index, Collection<? extends Boolean> c) {
         if (c == this) throw new IllegalArgumentException("can't addAll this itself");
         if (c instanceof BooleanList)
-            addAll(index, ((BooleanList) c).backed, ((BooleanList) c).size);
+            return addAll(index, ((BooleanList) c).backed, ((BooleanList) c).size);
         return addAll(index, toPrimitives(c));
     }
 
     private boolean addAll(int index, boolean[] c, int addSize) {
         rangeCheckForAdd(index);
         modCount++;
-        if (size == 0) return false;
+        if (addSize == 0) return false;
         boolean[] ary;
         if (backed.length < size + addSize) {
             int newSize = backed.length * 2;
