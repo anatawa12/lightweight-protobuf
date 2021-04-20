@@ -2,7 +2,6 @@ package com.anatawa12.protobuf;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PushbackInputStream;
 
 class LimitingInputStream extends InputStream {
     final InputStream s;

@@ -20,7 +20,7 @@ dependencies {
 }
 
 tasks.processResources {
-    from (fileTree("compiler/src/main/proto"))
+    from(fileTree("compiler/src/main/proto"))
 }
 
 tasks.test {

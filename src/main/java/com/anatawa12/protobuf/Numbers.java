@@ -9,8 +9,8 @@ public final class Numbers {
     static {
         hash2pos = new byte[64];
         long hash = 0x03F566ED27179461L;
-        for ( byte i = 0; i < 64; i++ ) {
-            hash2pos[(int)((hash << i) >>> 58)] = i;
+        for (byte i = 0; i < 64; i++) {
+            hash2pos[(int) ((hash << i) >>> 58)] = i;
         }
     }
 

@@ -33,7 +33,7 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
         addAll(from);
     }
 
-    // internal: in this constructor, empty backed array is allowed 
+    // internal: in this constructor, empty backed array is allowed
     // but it may cause infinity loop or index out of exeption on adding value.
     IntList(int capacity, int marker) {
         this.backed = new int[capacity];
@@ -66,7 +66,7 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
     @Override
     public final boolean contains(Object o) {
         if (!(o instanceof Integer)) return false;
-        return contains((int)o);
+        return contains((int) o);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
         // create new array if size is not enough
         if (a.length < size) a = (T[]) Array.newInstance(a.getClass().getComponentType(), size);
         for (int i = 0; i < size; i++) {
-            a[i] = (T)(Integer)backed[i];
+            a[i] = (T) (Integer) backed[i];
         }
         return a;
     }
@@ -107,7 +107,7 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
     @Deprecated
     @Override
     public final boolean add(Integer boxed) {
-        return add((int)boxed);
+        return add((int) boxed);
     }
 
     /**
@@ -118,7 +118,7 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
     public final boolean remove(Object o) {
         if (!(o instanceof Integer))
             return false;
-        return removeInt((int)o);
+        return removeInt((int) o);
     }
 
     public boolean removeInt(int value) {
@@ -317,7 +317,7 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
     @Deprecated
     @Override
     public final Integer set(int index, Integer element) {
-        return set(index, (int)element);
+        return set(index, (int) element);
     }
 
     public void add(int index, int value) {
@@ -347,7 +347,7 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
     @Deprecated
     @Override
     public void add(int index, Integer element) {
-        add(index, (int)element);
+        add(index, (int) element);
     }
 
     public int removeAt(int index) {
@@ -376,7 +376,7 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
     @Override
     public final int indexOf(Object o) {
         if (!(o instanceof Integer)) return -1;
-        return indexOf((int)o);
+        return indexOf((int) o);
     }
 
     public final int indexOf(int value) {
@@ -392,7 +392,7 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
     @Override
     public final int lastIndexOf(Object o) {
         if (!(o instanceof Integer)) return -1;
-        return indexOf((int)o);
+        return lastIndexOf((int) o);
     }
 
     public final int lastIndexOf(int value) {
@@ -487,7 +487,7 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
         }
 
         public int previousIndex() {
-            return cursor-1;
+            return cursor - 1;
         }
 
         public void set(int e) {
@@ -518,10 +518,11 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
         }
 
         public void set(Integer e) {
-            set((int)e);
+            set((int) e);
         }
+
         public void add(Integer e) {
-            add((int)e);
+            add((int) e);
         }
 
         public Integer previous() {
@@ -557,11 +558,11 @@ public class IntList extends AbstractList<Integer> implements List<Integer>, Ran
     }
 
     private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+size();
+        return "Index: " + index + ", Size: " + size();
     }
 
     private boolean eq(int o1, Object o2) {
-        return o2 instanceof Integer && o1 == (int)o2;
+        return o2 instanceof Integer && o1 == (int) o2;
     }
 
     private static final Integer[] EMPTY_WRAPPER_ARRAY = new Integer[0];

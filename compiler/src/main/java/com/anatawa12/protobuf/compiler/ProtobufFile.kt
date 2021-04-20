@@ -173,6 +173,7 @@ class MapTypeInfo(
 
 sealed class SimpleTypeInfo : TypeInfo() {
     abstract val typeTag: TypeTag
+
     companion object {
         fun of(field: DescriptorProtos.FieldDescriptorProto, types: Map<FqName, UserTypeInfo>): SimpleTypeInfo {
             return when (field.type!!) {
@@ -216,6 +217,7 @@ sealed class PrimitiveType(val name: kotlin.String, override val javaName: kotli
             "com.anatawa12.protobuf.Bytes" -> "com.anatawa12.protobuf.Bytes.defaultValue"
             else -> throw AssertionError("logic failre")
         }
+
     override fun isJavaPrimitive(): Boolean = when (javaName) {
         "double" -> true
         "float" -> true
@@ -224,67 +226,84 @@ sealed class PrimitiveType(val name: kotlin.String, override val javaName: kotli
         "boolean" -> true
         else -> false
     }
-    val primitiveIteratorType: kotlin.String get() = when (javaName) {
-        "double" -> "java.util.PrimitiveIterator.OfDouble"
-        "float" -> "$protobuf.FloatIterator"
-        "long" -> "java.util.PrimitiveIterator.OfLong"
-        "int" -> "java.util.PrimitiveIterator.OfInt"
-        "boolean" -> "$protobuf.BooleanIterator"
-        else -> error("not a primitive type")
-    }
-    val primitiveIteratorNextFunc: kotlin.String get() = when (javaName) {
-        "double" -> "nextDouble"
-        "float" -> "nextFloat"
-        "long" -> "nextLong"
-        "int" -> "nextInt"
-        "boolean" -> "nextBoolean"
-        else -> error("not a primitive type")
-    }
+
+    val primitiveIteratorType: kotlin.String
+        get() = when (javaName) {
+            "double" -> "java.util.PrimitiveIterator.OfDouble"
+            "float" -> "$protobuf.FloatIterator"
+            "long" -> "java.util.PrimitiveIterator.OfLong"
+            "int" -> "java.util.PrimitiveIterator.OfInt"
+            "boolean" -> "$protobuf.BooleanIterator"
+            else -> error("not a primitive type")
+        }
+    val primitiveIteratorNextFunc: kotlin.String
+        get() = when (javaName) {
+            "double" -> "nextDouble"
+            "float" -> "nextFloat"
+            "long" -> "nextLong"
+            "int" -> "nextInt"
+            "boolean" -> "nextBoolean"
+            else -> error("not a primitive type")
+        }
 
     override fun toString(): kotlin.String = name
 
     object Double : PrimitiveType("double", "double") {
         override val typeTag get() = TypeTag.TYPE_64BIT
     }
+
     object Float : PrimitiveType("float", "float") {
         override val typeTag get() = TypeTag.TYPE_32BIT
     }
+
     object Int64 : PrimitiveType("int64", "long") {
         override val typeTag get() = TypeTag.TYPE_VARINT
     }
+
     object Uint64 : PrimitiveType("uint64", "long") {
         override val typeTag get() = TypeTag.TYPE_VARINT
     }
+
     object Fixed64 : PrimitiveType("fixed64", "long") {
         override val typeTag get() = TypeTag.TYPE_64BIT
     }
+
     object SFixed64 : PrimitiveType("sfixed64", "long") {
         override val typeTag get() = TypeTag.TYPE_64BIT
     }
+
     object SInt64 : PrimitiveType("sint64", "long") {
         override val typeTag get() = TypeTag.TYPE_VARINT
     }
+
     object Int32 : PrimitiveType("int32", "int") {
         override val typeTag get() = TypeTag.TYPE_VARINT
     }
+
     object Fixed32 : PrimitiveType("fixed32", "int") {
         override val typeTag get() = TypeTag.TYPE_32BIT
     }
+
     object SFixed32 : PrimitiveType("sfixed32", "int") {
         override val typeTag get() = TypeTag.TYPE_32BIT
     }
+
     object Uint32 : PrimitiveType("uint32", "int") {
         override val typeTag get() = TypeTag.TYPE_VARINT
     }
+
     object SInt32 : PrimitiveType("sint32", "int") {
         override val typeTag get() = TypeTag.TYPE_VARINT
     }
+
     object Bool : PrimitiveType("bool", "boolean") {
         override val typeTag get() = TypeTag.TYPE_VARINT
     }
+
     object String : PrimitiveType("string", "java.lang.String") {
         override val typeTag get() = TypeTag.TYPE_DELIMITED
     }
+
     object Bytes : PrimitiveType("bytes", "com.anatawa12.protobuf.Bytes") {
         override val typeTag get() = TypeTag.TYPE_DELIMITED
     }
@@ -322,7 +341,8 @@ class MessageInfo(
         for (field in real.fieldList) {
             val typeName = TypeInfo.of(field, types)
             if (field.hasOneofIndex()) {
-                fields.add(FieldInfo(field.name,
+                fields.add(FieldInfo(
+                    field.name,
                     field.number,
                     typeName,
                     true,
@@ -330,7 +350,8 @@ class MessageInfo(
                     field.options.packed,
                 ))
             } else {
-                fields.add(FieldInfo(field.name,
+                fields.add(FieldInfo(
+                    field.name,
                     field.number,
                     typeName,
                     false,

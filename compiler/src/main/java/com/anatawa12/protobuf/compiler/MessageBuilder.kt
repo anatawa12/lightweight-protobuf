@@ -42,7 +42,12 @@ object MessageBuilder {
                 } else {
                     block("if (builder.${v("has", field.name)}())") {
                         if (field.type is CollectionTypeInfo) {
-                            +"this.oneOf${field.index} = ${field.type.newImmutable("builder.${v("get", field.name)}()")};"
+                            +"this.oneOf${field.index} = ${
+                                field.type.newImmutable("builder.${
+                                    v("get",
+                                        field.name)
+                                }()")
+                            };"
                         } else {
                             +"this.oneOf${field.index} = builder.${v("get", field.name)}();"
                         }
@@ -184,16 +189,19 @@ object MessageBuilder {
                 if (!field.oneOf) {
                     when {
                         field.type.javaName == "double" -> {
-                            +"if (Double.doubleToLongBits(this.${v("get", field.name)}()) != Double.doubleToLongBits(other.${v("get", field.name)}())) return false;"
+                            +("if (Double.doubleToLongBits(this.${v("get", field.name)}()) " +
+                                    "!= Double.doubleToLongBits(other.${v("get", field.name)}())) return false;")
                         }
                         field.type.javaName == "float" -> {
-                            +"if (Float.floatToIntBits(this.${v("get", field.name)}()) != Float.floatToIntBits(other.${v("get", field.name)}())) return false;"
+                            +("if (Float.floatToIntBits(this.${v("get", field.name)}()) " +
+                                    "!= Float.floatToIntBits(other.${v("get", field.name)}())) return false;")
                         }
                         field.type.isJavaPrimitive() -> {
                             +"if (this.${v("get", field.name)}() != other.${v("get", field.name)}()) return false;"
                         }
                         else -> {
-                            +"if (!java.util.Objects.equals(this.${v("get", field.name)}(), other.${v("get", field.name)}())) return false;"
+                            +("if (!java.util.Objects.equals(this.${v("get", field.name)}(), " +
+                                    "other.${v("get", field.name)}())) return false;")
                         }
                     }
                 }
@@ -216,7 +224,7 @@ object MessageBuilder {
                 +"// field ${field.type} ${field.name} = ${field.number}"
             }
             if (field.type is CollectionTypeInfo) {
-                val notExists = if (field.oneOf)  "oneOfStat${field.index} != ${field.number}"
+                val notExists = if (field.oneOf) "oneOfStat${field.index} != ${field.number}"
                 else "field${field.number} == null"
 
                 +"@java.lang.SuppressWarnings(\"UNCHECKED_CAST\")"
@@ -293,7 +301,8 @@ object MessageBuilder {
                 // oneof field
                 +"@java.lang.SuppressWarnings(\"UNCHECKED_CAST\")"
                 block("public final ${field.type.javaName} ${v("get", field.name)}()") {
-                    +"return ${v("has", field.name)}() ? (${field.type.javaName}) oneOf${field.index} : ${field.type.defaultValue};"
+                    +("return ${v("has", field.name)}() ? " +
+                            "(${field.type.javaName}) oneOf${field.index} : ${field.type.defaultValue};")
                 }
                 +""
                 block("public final boolean ${v("has", field.name)}()") {
@@ -372,8 +381,10 @@ object MessageBuilder {
                         block("try") {
                             block("mapEntry: while(true)") {
                                 block("switch(reader.tag())") {
-                                    +"case ${tagOf(1, type.key)}: key = ${generateReadPrimitiveType(type.key)}; break;"
-                                    +"case ${tagOf(2, type.value)}: value = ${generateReadPrimitiveType(type.value)}; break;"
+                                    +("case ${tagOf(1, type.key)}: " +
+                                            "key = ${generateReadPrimitiveType(type.key)}; break;")
+                                    +("case ${tagOf(2, type.value)}: " +
+                                            "value = ${generateReadPrimitiveType(type.value)}; break;")
                                     +"case 0: break mapEntry;"
                                     +"default: reader.skip();"
                                 }
@@ -392,7 +403,8 @@ object MessageBuilder {
                             +"$protobuf.WireReader.EmbeddedMarker marker = reader.startEmbedded();"
                             block("try") {
                                 block("while (reader.hasRemaining())") {
-                                    +"builder.${v("add", field.name)}(${generateReadAPackedPrimitiveType(type.element)});"
+                                    +("builder.${v("add", field.name)}(" +
+                                            "${generateReadAPackedPrimitiveType(type.element)});")
                                 }
                             }
                             block("finally") {
@@ -463,7 +475,12 @@ object MessageBuilder {
         }
     }
 
-    private fun SourceBuilder.generateWriteAField(type: TypeInfo, number: Int, getter: String, packed: Boolean = false) {
+    private fun SourceBuilder.generateWriteAField(
+        type: TypeInfo,
+        number: Int,
+        getter: String,
+        packed: Boolean = false,
+    ) {
         when (type) {
             is SimpleTypeInfo -> {
                 val cond = when (type) {

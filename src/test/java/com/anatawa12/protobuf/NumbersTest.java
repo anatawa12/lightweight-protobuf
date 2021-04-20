@@ -2,7 +2,7 @@ package com.anatawa12.protobuf;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NumbersTest {
     @Test

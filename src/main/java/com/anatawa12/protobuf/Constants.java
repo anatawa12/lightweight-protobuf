@@ -1,7 +1,8 @@
 package com.anatawa12.protobuf;
 
 public final class Constants {
-    private Constants() {}
+    private Constants() {
+    }
 
     @SuppressWarnings({"SpellCheckingInspection"})
     public static final int TYPE_VARINT = 0;
@@ -13,13 +14,20 @@ public final class Constants {
 
     public static String typeName(int type) {
         switch (type) {
-            case TYPE_VARINT: return "VARINT";
-            case TYPE_64BIT: return "64BIT";
-            case TYPE_DELIMITED: return "DELIMITED";
-            case TYPE_START: return "START";
-            case TYPE_END: return "END";
-            case TYPE_32BIT: return "32BIT";
-            default: return "unknown " + type;
+            case TYPE_VARINT:
+                return "VARINT";
+            case TYPE_64BIT:
+                return "64BIT";
+            case TYPE_DELIMITED:
+                return "DELIMITED";
+            case TYPE_START:
+                return "START";
+            case TYPE_END:
+                return "END";
+            case TYPE_32BIT:
+                return "32BIT";
+            default:
+                return "unknown " + type;
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.anatawa12.protobuf.compiler
 
-import com.google.protobuf.DescriptorProtos
 import com.google.protobuf.ExtensionRegistry
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse

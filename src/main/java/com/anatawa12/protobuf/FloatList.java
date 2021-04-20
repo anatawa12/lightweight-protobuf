@@ -12,7 +12,6 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.PrimitiveIterator;
 import java.util.RandomAccess;
 
 public class FloatList extends AbstractList<Float> implements List<Float>, RandomAccess {
@@ -32,7 +31,7 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
         addAll(from);
     }
 
-    // internal: in this constructor, empty backed array is allowed 
+    // internal: in this constructor, empty backed array is allowed
     // but it may cause infinity loop or index out of exeption on adding value.
     FloatList(int capacity, int marker) {
         this.backed = new float[capacity];
@@ -65,7 +64,7 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
     @Override
     public final boolean contains(Object o) {
         if (!(o instanceof Float)) return false;
-        return contains((float)o);
+        return contains((float) o);
     }
 
     @Override
@@ -84,7 +83,7 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
         // create new array if size is not enough
         if (a.length < size) a = (T[]) Array.newInstance(a.getClass().getComponentType(), size);
         for (int i = 0; i < size; i++) {
-            a[i] = (T)(Float)backed[i];
+            a[i] = (T) (Float) backed[i];
         }
         return a;
     }
@@ -106,7 +105,7 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
     @Deprecated
     @Override
     public final boolean add(Float boxed) {
-        return add((float)boxed);
+        return add((float) boxed);
     }
 
     /**
@@ -117,7 +116,7 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
     public final boolean remove(Object o) {
         if (!(o instanceof Float))
             return false;
-        return removeFloat((float)o);
+        return removeFloat((float) o);
     }
 
     public boolean removeFloat(float value) {
@@ -316,7 +315,7 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
     @Deprecated
     @Override
     public final Float set(int index, Float element) {
-        return set(index, (float)element);
+        return set(index, (float) element);
     }
 
     public void add(int index, float value) {
@@ -346,7 +345,7 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
     @Deprecated
     @Override
     public void add(int index, Float element) {
-        add(index, (float)element);
+        add(index, (float) element);
     }
 
     public float removeAt(int index) {
@@ -375,7 +374,7 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
     @Override
     public final int indexOf(Object o) {
         if (!(o instanceof Float)) return -1;
-        return indexOf((float)o);
+        return indexOf((float) o);
     }
 
     public final int indexOf(float value) {
@@ -391,7 +390,7 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
     @Override
     public final int lastIndexOf(Object o) {
         if (!(o instanceof Float)) return -1;
-        return indexOf((float)o);
+        return lastIndexOf((float) o);
     }
 
     public final int lastIndexOf(float value) {
@@ -486,7 +485,7 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
         }
 
         public int previousIndex() {
-            return cursor-1;
+            return cursor - 1;
         }
 
         public void set(float e) {
@@ -517,10 +516,11 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
         }
 
         public void set(Float e) {
-            set((float)e);
+            set((float) e);
         }
+
         public void add(Float e) {
-            add((float)e);
+            add((float) e);
         }
 
         public Float previous() {
@@ -556,11 +556,11 @@ public class FloatList extends AbstractList<Float> implements List<Float>, Rando
     }
 
     private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+size();
+        return "Index: " + index + ", Size: " + size();
     }
 
     private boolean eq(float o1, Object o2) {
-        return o2 instanceof Float && o1 == (float)o2;
+        return o2 instanceof Float && o1 == (float) o2;
     }
 
     private static final Float[] EMPTY_WRAPPER_ARRAY = new Float[0];

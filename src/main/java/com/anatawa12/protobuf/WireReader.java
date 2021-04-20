@@ -160,13 +160,20 @@ public class WireReader {
     public void skip() throws IOException {
         if (fieldId() == 0) return;
         switch (typeTag()) {
-            case TYPE_VARINT: varint();
-            case TYPE_64BIT: fixed64();
-            case TYPE_DELIMITED: delimited();
-            case TYPE_START: skipGroup();
-            case TYPE_END: throw new ProtocolException("maniformed GROUP");
-            case TYPE_32BIT: fixed32();
-            default: throw new ProtocolException("unknwon tag: " + typeTag());
+            case TYPE_VARINT:
+                varint();
+            case TYPE_64BIT:
+                fixed64();
+            case TYPE_DELIMITED:
+                delimited();
+            case TYPE_START:
+                skipGroup();
+            case TYPE_END:
+                throw new ProtocolException("maniformed GROUP");
+            case TYPE_32BIT:
+                fixed32();
+            default:
+                throw new ProtocolException("unknwon tag: " + typeTag());
         }
     }
 

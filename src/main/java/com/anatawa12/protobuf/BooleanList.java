@@ -12,7 +12,6 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.PrimitiveIterator;
 import java.util.RandomAccess;
 
 public class BooleanList extends AbstractList<Boolean> implements List<Boolean>, RandomAccess {
@@ -32,7 +31,7 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
         addAll(from);
     }
 
-    // internal: in this constructor, empty backed array is allowed 
+    // internal: in this constructor, empty backed array is allowed
     // but it may cause infinity loop or index out of exeption on adding value.
     BooleanList(int capacity, int marker) {
         this.backed = new boolean[capacity];
@@ -65,7 +64,7 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
     @Override
     public final boolean contains(Object o) {
         if (!(o instanceof Boolean)) return false;
-        return contains((boolean)o);
+        return contains((boolean) o);
     }
 
     @Override
@@ -84,7 +83,7 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
         // create new array if size is not enough
         if (a.length < size) a = (T[]) Array.newInstance(a.getClass().getComponentType(), size);
         for (int i = 0; i < size; i++) {
-            a[i] = (T)(Boolean)backed[i];
+            a[i] = (T) (Boolean) backed[i];
         }
         return a;
     }
@@ -106,7 +105,7 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
     @Deprecated
     @Override
     public final boolean add(Boolean boxed) {
-        return add((boolean)boxed);
+        return add((boolean) boxed);
     }
 
     /**
@@ -117,7 +116,7 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
     public final boolean remove(Object o) {
         if (!(o instanceof Boolean))
             return false;
-        return removeBoolean((boolean)o);
+        return removeBoolean((boolean) o);
     }
 
     public boolean removeBoolean(boolean value) {
@@ -316,7 +315,7 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
     @Deprecated
     @Override
     public final Boolean set(int index, Boolean element) {
-        return set(index, (boolean)element);
+        return set(index, (boolean) element);
     }
 
     public void add(int index, boolean value) {
@@ -346,7 +345,7 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
     @Deprecated
     @Override
     public void add(int index, Boolean element) {
-        add(index, (boolean)element);
+        add(index, (boolean) element);
     }
 
     public boolean removeAt(int index) {
@@ -375,7 +374,7 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
     @Override
     public final int indexOf(Object o) {
         if (!(o instanceof Boolean)) return -1;
-        return indexOf((boolean)o);
+        return indexOf((boolean) o);
     }
 
     public final int indexOf(boolean value) {
@@ -391,7 +390,7 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
     @Override
     public final int lastIndexOf(Object o) {
         if (!(o instanceof Boolean)) return -1;
-        return indexOf((boolean)o);
+        return lastIndexOf((boolean) o);
     }
 
     public final int lastIndexOf(boolean value) {
@@ -486,7 +485,7 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
         }
 
         public int previousIndex() {
-            return cursor-1;
+            return cursor - 1;
         }
 
         public void set(boolean e) {
@@ -517,10 +516,11 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
         }
 
         public void set(Boolean e) {
-            set((boolean)e);
+            set((boolean) e);
         }
+
         public void add(Boolean e) {
-            add((boolean)e);
+            add((boolean) e);
         }
 
         public Boolean previous() {
@@ -556,11 +556,11 @@ public class BooleanList extends AbstractList<Boolean> implements List<Boolean>,
     }
 
     private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+size();
+        return "Index: " + index + ", Size: " + size();
     }
 
     private boolean eq(boolean o1, Object o2) {
-        return o2 instanceof Boolean && o1 == (boolean)o2;
+        return o2 instanceof Boolean && o1 == (boolean) o2;
     }
 
     private static final Boolean[] EMPTY_WRAPPER_ARRAY = new Boolean[0];

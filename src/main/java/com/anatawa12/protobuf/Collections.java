@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Collections {
-    private Collections(){
+    private Collections() {
     }
 
     public static <T> List<T> makeImmutable(List<T> input) {

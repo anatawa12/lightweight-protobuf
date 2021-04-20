@@ -33,7 +33,7 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
         addAll(from);
     }
 
-    // internal: in this constructor, empty backed array is allowed 
+    // internal: in this constructor, empty backed array is allowed
     // but it may cause infinity loop or index out of exeption on adding value.
     LongList(int capacity, int marker) {
         this.backed = new long[capacity];
@@ -66,7 +66,7 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
     @Override
     public final boolean contains(Object o) {
         if (!(o instanceof Long)) return false;
-        return contains((long)o);
+        return contains((long) o);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
         // create new array if size is not enough
         if (a.length < size) a = (T[]) Array.newInstance(a.getClass().getComponentType(), size);
         for (int i = 0; i < size; i++) {
-            a[i] = (T)(Long)backed[i];
+            a[i] = (T) (Long) backed[i];
         }
         return a;
     }
@@ -107,7 +107,7 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
     @Deprecated
     @Override
     public final boolean add(Long boxed) {
-        return add((long)boxed);
+        return add((long) boxed);
     }
 
     /**
@@ -118,7 +118,7 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
     public final boolean remove(Object o) {
         if (!(o instanceof Long))
             return false;
-        return removeLong((long)o);
+        return removeLong((long) o);
     }
 
     public boolean removeLong(long value) {
@@ -317,7 +317,7 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
     @Deprecated
     @Override
     public final Long set(int index, Long element) {
-        return set(index, (long)element);
+        return set(index, (long) element);
     }
 
     public void add(int index, long value) {
@@ -347,7 +347,7 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
     @Deprecated
     @Override
     public void add(int index, Long element) {
-        add(index, (long)element);
+        add(index, (long) element);
     }
 
     public long removeAt(int index) {
@@ -376,7 +376,7 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
     @Override
     public final int indexOf(Object o) {
         if (!(o instanceof Long)) return -1;
-        return indexOf((long)o);
+        return indexOf((long) o);
     }
 
     public final int indexOf(long value) {
@@ -392,7 +392,7 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
     @Override
     public final int lastIndexOf(Object o) {
         if (!(o instanceof Long)) return -1;
-        return indexOf((long)o);
+        return lastIndexOf((long) o);
     }
 
     public final int lastIndexOf(long value) {
@@ -487,7 +487,7 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
         }
 
         public int previousIndex() {
-            return cursor-1;
+            return cursor - 1;
         }
 
         public void set(long e) {
@@ -518,10 +518,11 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
         }
 
         public void set(Long e) {
-            set((long)e);
+            set((long) e);
         }
+
         public void add(Long e) {
-            add((long)e);
+            add((long) e);
         }
 
         public Long previous() {
@@ -557,11 +558,11 @@ public class LongList extends AbstractList<Long> implements List<Long>, RandomAc
     }
 
     private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+size();
+        return "Index: " + index + ", Size: " + size();
     }
 
     private boolean eq(long o1, Object o2) {
-        return o2 instanceof Long && o1 == (long)o2;
+        return o2 instanceof Long && o1 == (long) o2;
     }
 
     private static final Long[] EMPTY_WRAPPER_ARRAY = new Long[0];

@@ -12,6 +12,9 @@ public interface FloatConsumer {
 
     default FloatConsumer andThen(FloatConsumer after) {
         Objects.requireNonNull(after);
-        return (float t) -> { accept(t); after.accept(t); };
+        return (float t) -> {
+            accept(t);
+            after.accept(t);
+        };
     }
 }

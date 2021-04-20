@@ -1,7 +1,8 @@
 package com.anatawa12.protobuf;
 
 public final class Objects {
-    private Objects() {}
+    private Objects() {
+    }
 
     public static int hash(double d) {
         return hash(Double.doubleToLongBits(d));
@@ -12,7 +13,7 @@ public final class Objects {
     }
 
     public static int hash(long l) {
-        return (int)(l ^ l >>> 32);
+        return (int) (l ^ l >>> 32);
     }
 
     public static int hash(int i) {

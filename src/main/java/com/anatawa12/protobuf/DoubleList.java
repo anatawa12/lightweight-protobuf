@@ -33,7 +33,7 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
         addAll(from);
     }
 
-    // internal: in this constructor, empty backed array is allowed 
+    // internal: in this constructor, empty backed array is allowed
     // but it may cause infinity loop or index out of exeption on adding value.
     DoubleList(int capacity, int marker) {
         this.backed = new double[capacity];
@@ -66,7 +66,7 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
     @Override
     public final boolean contains(Object o) {
         if (!(o instanceof Double)) return false;
-        return contains((double)o);
+        return contains((double) o);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
         // create new array if size is not enough
         if (a.length < size) a = (T[]) Array.newInstance(a.getClass().getComponentType(), size);
         for (int i = 0; i < size; i++) {
-            a[i] = (T)(Double)backed[i];
+            a[i] = (T) (Double) backed[i];
         }
         return a;
     }
@@ -107,7 +107,7 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
     @Deprecated
     @Override
     public final boolean add(Double boxed) {
-        return add((double)boxed);
+        return add((double) boxed);
     }
 
     /**
@@ -118,7 +118,7 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
     public final boolean remove(Object o) {
         if (!(o instanceof Double))
             return false;
-        return removeDouble((double)o);
+        return removeDouble((double) o);
     }
 
     public boolean removeDouble(double value) {
@@ -317,7 +317,7 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
     @Deprecated
     @Override
     public final Double set(int index, Double element) {
-        return set(index, (double)element);
+        return set(index, (double) element);
     }
 
     public void add(int index, double value) {
@@ -347,7 +347,7 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
     @Deprecated
     @Override
     public void add(int index, Double element) {
-        add(index, (double)element);
+        add(index, (double) element);
     }
 
     public double removeAt(int index) {
@@ -376,7 +376,7 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
     @Override
     public final int indexOf(Object o) {
         if (!(o instanceof Double)) return -1;
-        return indexOf((double)o);
+        return indexOf((double) o);
     }
 
     public final int indexOf(double value) {
@@ -392,7 +392,7 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
     @Override
     public final int lastIndexOf(Object o) {
         if (!(o instanceof Double)) return -1;
-        return indexOf((double)o);
+        return lastIndexOf((double) o);
     }
 
     public final int lastIndexOf(double value) {
@@ -487,7 +487,7 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
         }
 
         public int previousIndex() {
-            return cursor-1;
+            return cursor - 1;
         }
 
         public void set(double e) {
@@ -518,10 +518,11 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
         }
 
         public void set(Double e) {
-            set((double)e);
+            set((double) e);
         }
+
         public void add(Double e) {
-            add((double)e);
+            add((double) e);
         }
 
         public Double previous() {
@@ -557,11 +558,11 @@ public class DoubleList extends AbstractList<Double> implements List<Double>, Ra
     }
 
     private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+size();
+        return "Index: " + index + ", Size: " + size();
     }
 
     private boolean eq(double o1, Object o2) {
-        return o2 instanceof Double && o1 == (double)o2;
+        return o2 instanceof Double && o1 == (double) o2;
     }
 
     private static final Double[] EMPTY_WRAPPER_ARRAY = new Double[0];

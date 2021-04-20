@@ -53,7 +53,8 @@ class SimpleDataTest {
     fun emptiesAreEqual() {
         assertTrue(SimpleData.newBuilder().build()
                 == SimpleData.newBuilder().build()) { "two empties are not equals" }
-        assertTrue(SimpleData.defaultValue == SimpleData.newBuilder().build()) { "two empty and defaultValue are not equals" }
+        assertTrue(SimpleData.defaultValue == SimpleData.newBuilder()
+            .build()) { "two empty and defaultValue are not equals" }
     }
 
     @Test
@@ -85,6 +86,7 @@ class SimpleDataTest {
         .setStringValue("hello! this is test string!")
         .setBytesValue(ByteString.copyFrom("bytes data".toByteArray()))
         .build()
+
     fun lightValue() = SimpleData.newBuilder()
         .setDoubleValue(1.0)
         .setFloatValue(2.0F)

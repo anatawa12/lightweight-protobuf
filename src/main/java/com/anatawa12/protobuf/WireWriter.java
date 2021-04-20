@@ -105,7 +105,7 @@ public final class WireWriter {
 
     private static int putVarintTo(long value, byte[] buf, int cur) {
         do {
-            buf[cur++] = (byte)(0x80 | value & 0x7F);
+            buf[cur++] = (byte) (0x80 | value & 0x7F);
             value >>>= 7;
         } while (value != 0);
         // for last byte, remove highest bit.

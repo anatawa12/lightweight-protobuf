@@ -54,7 +54,8 @@ class RepeatedDataTest {
     fun emptiesAreEqual() {
         assertTrue(RepeatedData.newBuilder().build()
                 == RepeatedData.newBuilder().build()) { "two empties are not equals" }
-        assertTrue(RepeatedData.defaultValue == RepeatedData.newBuilder().build()) { "two empty and defaultValue are not equals" }
+        assertTrue(RepeatedData.defaultValue == RepeatedData.newBuilder()
+            .build()) { "two empty and defaultValue are not equals" }
     }
 
     fun googleValue() = First.RepeatedData.newBuilder()
