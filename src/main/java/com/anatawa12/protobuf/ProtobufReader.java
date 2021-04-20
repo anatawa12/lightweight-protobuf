@@ -276,16 +276,14 @@ public class ProtobufReader {
     }
 
     private long varint() throws IOException {
-        long r;
-        int b = s.read();
-        if (b < 0) throw new ProtocolException("Malformed VARINT");
-        r = b & 0x7F;
-        int index = 1;
-        while ((b & 0x80) != 0) {
+        long r = 0;
+        int b;
+        int index = 0;
+        do {
             b = s.read();
             if (b < 0) throw new ProtocolException("Malformed VARINT");
             r = r | (b & 0x7FL) << index++ * 7;
-        }
+        } while ((b & 0x80) != 0);
         tag = -1;
         return r;
     }
