@@ -3,6 +3,9 @@ lightweight protobuf
 
 A lightweight protocol buffer implementation for java.
 
+![maven-central](https://shields.io/maven-central/v/com.anatawa12.lightweight-protobuf/lightweight-protobuf)
+[![a12 maintenance: Active](https://anatawa12.com/short.php?q=a12-active-svg)](https://anatawa12.com/short.php?q=a12-active-doc)
+
 ## Why not [Google's official protobuf for java][google-protobuf] nor [wire by Square][square-wire]?
 
 Because those are a little heavy, I made this.
@@ -27,6 +30,52 @@ Compared with Google's protobuf, there are various limitations.
   - No support for proto3's optionals
 - No support for descriptors of anything like FileDescriptor.
 
+## How To Use
+
+You can get runtime library from maven central. Here's example configuration for gradle.
+
+```kotlin
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.anatawa12.lightweight-protobuf:lightweight-protobuf:$lightWeightProtobufVersion")
+}
+```
+
+You can also get jar version of protoc plugin from maven central. You can generate java files
+using [protobuf-gradle-plugin].
+
+```kotlin
+protobuf {
+    plugins {
+        create("lw-java") {
+            artifact = "com.anatawa12.lightweight-protobuf:compiler:$lightWeightProtobufVersion:all@jar"
+        }
+    }
+    generateProtoTasks {
+        // use 'all().each {' for groovy
+        all().forEach {
+            it.plugins {
+                create("lw-java")
+            }
+        }
+    }
+}
+```
+
+If you want to generate java files using `protoc`, you need to write wrapper script for each platform like this.
+
+```shell
+#!/bin/sh
+exec java -jar /path/to/compiler-plugin.jar
+```
+```bat
+@ECHO OFF
+java -jar \path\to\compiler-plugin.jar
+```
+
 ## Status
 
 - [x] implement data struct compiler
@@ -49,3 +98,5 @@ Compared with Google's protobuf, there are various limitations.
 [okio-2.8.0.jar]: https://repo1.maven.org/maven2/com/squareup/okio/okio/2.8.0/okio-2.8.0.jar
 
 [shadow plugin]: https://github.com/johnrengelman/shadow
+
+[protobuf-gradle-plugin]: https://github.com/google/protobuf-gradle-plugin
