@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.anatawa12.lightweight-protobuf"
-version = "0.0.2-SNASPHSOT"
+version = property("version")!!
 
 repositories {
     mavenCentral()
