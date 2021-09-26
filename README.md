@@ -4,7 +4,7 @@ lightweight protobuf
 A lightweight protocol buffer implementation for java.
 
 ![maven-central](https://shields.io/maven-central/v/com.anatawa12.lightweight-protobuf/lightweight-protobuf)
-[![a12 maintenance: Active](https://anatawa12.com/short.php?q=a12-active-svg)](https://anatawa12.com/short.php?q=a12-active-doc)
+[![a12 maintenance: Slowly](https://api.anatawa12.com/short/a12-slowly-svg)](https://api.anatawa12.com/short/a12-slowly-doc)
 
 ## Why not [Google's official protobuf for java][google-protobuf] nor [wire by Square][square-wire]?
 
